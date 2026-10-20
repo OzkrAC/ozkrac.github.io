@@ -1,4 +1,3 @@
-# LaTeX build artifacts
 *.aux
 *.fdb_latexmk
 *.fls
@@ -17,6 +16,7 @@
 *.ilg
 *.ind
 *.xdv
+*.pre.html
+.private/
+.backup/
 
-# Reading notes and anything else that stays off the site
-private/

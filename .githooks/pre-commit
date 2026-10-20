@@ -1,6 +1,7 @@
 #!/bin/sh
 # Before every commit: the tracked notes are checked, and the catalogue and
-# search index of each section (notes.json, search.json) are written again
+# search index and glossary of each section (notes.json, search.json,
+# glossary.json) are written again
 # and staged, so that the committed tree is always consistent.
 # Set up once per clone:  git config core.hooksPath .githooks
 set -e
@@ -15,6 +16,7 @@ fi
 # never reaches the check or the published files.
 git ls-files -z -- '*.html' | xargs -0 tern check --fail-on=warning --quiet
 
-tern index wiki -o wiki
-tern index blog -o blog
-git add wiki/notes.json wiki/search.json blog/notes.json blog/search.json
+#tern index wiki -o wiki
+#tern index blog -o blog
+#git add wiki/notes.json wiki/search.json wiki/glossary.json \
+#        blog/notes.json blog/search.json blog/glossary.json

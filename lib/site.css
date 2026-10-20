@@ -14,6 +14,7 @@
   --t-fg: light-dark(#1e1c19, #e4e0d6);
   --t-muted: light-dark(#6e685e, #9a958a);
   --t-line: light-dark(#ddd7ca, #2c2a26);
+  --t-line-strong: light-dark(#8a8477, #726c62); /* 3:1 on the page: kbd, search box, diagnostics */
   --t-soft: light-dark(#f2eee4, #1d1c19);
   --t-link: light-dark(#2c5a9b, #8fb4ec);
   --t-mark: light-dark(#fbeeb4, #4a3f14);
@@ -34,7 +35,7 @@
   --t-font: "STIX Two Text", Charter, "Iowan Old Style", Georgia, serif;
   --t-sans: "STIX Two Text", Charter, "Iowan Old Style", Georgia, serif;
   --t-width: 42rem;
-  --t-size: 18px;
+  --t-size: 1.125rem; /* 18px at the default, and the reader's setting holds */
   --t-leading: 1.6;
 
   /* The kinds of block, each with a hue. */
@@ -418,6 +419,45 @@ body > main.tern {
   padding-inline-start: 1.25rem;
 }
 
+/* ------------------------------------------------------------ revisions */
+
+/* A revision: a sentence as written, then as revised, each under a small
+   head; a line on what moved may follow. */
+.tern .revision {
+  margin-block: 1.5rem;
+  padding-inline-start: 1.25rem;
+  border-inline-start: 1px solid var(--t-line);
+}
+.tern .revision > .before,
+.tern .revision > .after {
+  margin-block: 0.5rem;
+}
+.tern .revision > .before::before,
+.tern .revision > .after::before {
+  display: block;
+  font-family: var(--t-sans);
+  font-weight: 600;
+  font-size: 0.74rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--t-muted);
+  margin-block-end: 0.2rem;
+}
+.tern .revision > .before::before {
+  content: "Before";
+}
+.tern .revision > .after::before {
+  content: "After";
+  color: var(--n-accent, var(--n-thm));
+}
+.tern .revision > .before {
+  color: var(--t-muted);
+}
+.tern .revision > .after ~ p {
+  font-size: 0.92em;
+  color: var(--t-muted);
+}
+
 /* ------------------------------------------------------------ callouts */
 
 /* Summary, note, caution, question, recall: a soft panel, a rule at the side
@@ -550,6 +590,7 @@ body > main.tern {
     --t-fg: #000;
     --t-muted: #555;
     --t-line: #cfcfcf;
+    --t-line-strong: #767676;
     --t-soft: #f4f4f2;
     --t-size: 11pt;
   }
