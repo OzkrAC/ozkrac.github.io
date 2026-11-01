@@ -1,0 +1,29 @@
+<!doctype html>
+<meta charset="utf-8">
+<link rel="preload" href="/lib/site.js" as="script">
+<link rel="preload" href="/lib/site.css" as="style">
+<script src="https://cdn.luccet.dev/v2/luccet.js"></script>
+:::meta
+lang: en
+title: Projects · OzkrAC
+description: Projects by OzkrAC: Luccet, a note format that renders itself, and Lightc, a freestanding C runtime for Linux.
+:::
+
+:::use
+/lib/site.js
+/lib/site.css
+:::
+
+# Projects {#projects}
+
+## Luccet {#luccet}
+
+A level above Markdown, a level below LaTeX. A Luccet note is one `.html` file that renders itself in the browser: headings, numbered theorems and figures, references, footnotes and TeX math as MathML, with no build step. This site is written in it.
+
+[Documentation](https://luccet.dev) · [Source](https://github.com/Luccet/luccet)
+
+## Lightc {#lightc}
+
+A freestanding C runtime for Linux. No libc, no system linker scripts, no external dependencies: everything from `_start` to `exit` on raw Linux syscalls, for x86_64 and aarch64.
+
+[Documentation](/lightc/) · [Source](https://github.com/OzkrAC/lightc)

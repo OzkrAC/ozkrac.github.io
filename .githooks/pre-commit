@@ -1,22 +1,27 @@
 #!/bin/sh
-# Before every commit: the tracked notes are checked, and the catalogue and
+# Before every commit: the tracked notes are checked, and the catalogue,
 # search index and glossary of each section (notes.json, search.json,
-# glossary.json) are written again
-# and staged, so that the committed tree is always consistent.
+# glossary.json) are written again and staged, so that the committed tree
+# is always consistent.
 # Set up once per clone:  git config core.hooksPath .githooks
 set -e
 cd "$(git rev-parse --show-toplevel)"
 
-if ! command -v tern >/dev/null 2>&1; then
-  echo "pre-commit: tern is not on PATH; run npm link in the Tern checkout" >&2
+# The command: `luccet` on PATH, or the checkout's CLI.
+if command -v luccet >/dev/null 2>&1; then
+  LUCCET=luccet
+elif [ -f "$HOME/luccet.dev/luccet/luccet-cli.js" ]; then
+  LUCCET="node $HOME/luccet.dev/luccet/luccet-cli.js"
+else
+  echo "pre-commit: no luccet on PATH and no checkout at ~/luccet.dev/luccet" >&2
   exit 1
 fi
 
 # Only tracked notes are checked and indexed: a private note (gitignored)
 # never reaches the check or the published files.
-git ls-files -z -- '*.html' | xargs -0 tern check --fail-on=warning --quiet
+git ls-files -z -- '*.html' | xargs -0 $LUCCET check --fail-on=warning --quiet
 
-#tern index wiki -o wiki
-#tern index blog -o blog
-#git add wiki/notes.json wiki/search.json wiki/glossary.json \
-#        blog/notes.json blog/search.json blog/glossary.json
+# for section in erudition lucubration; do
+#   $LUCCET index "$section" -o "$section"
+#   git add "$section/notes.json" "$section/search.json" "$section/glossary.json"
+# done

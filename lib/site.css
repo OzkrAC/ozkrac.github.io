@@ -1,53 +1,39 @@
-/* site.css: the look every page of ozkr.ac shares. A printed book: paper and
-   ink by day, a dark room by night, one serif for text and headings alike,
-   KaTeX for formulas. Every colour is a light-dark() pair, so one set of
-   tokens serves the system's scheme and the reader's choice (site.js sets
-   color-scheme through data-theme). Loaded after tern.js's own sheet, so it
-   only has to say what differs. */
+/* site.css: the look of ozkr.ac, taken from the logo: an engraving of a bird in
+   ink on paper, in a gold rim. Paper and ink by day, night and paper by dark;
+   gold for the rules, the links and the labels; one serif for everything.
 
-@import url("https://fonts.googleapis.com/css2?family=STIX+Two+Text:ital,wght@0,400..700;1,400..700&display=swap");
+   luccet.css (loaded by luccet.js) is functional only, so this sheet is the
+   theme: it sets the --t-* properties luccet.css reads, the column and the
+   type, then the site's chrome (site.js) and the vocabulary (math.js). Every
+   colour is a light-dark() pair; site.js sets color-scheme through
+   data-theme when the reader chooses. */
+
+@import url("https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..700;1,400..700&display=swap");
+
+/* ------------------------------------------------------------ tokens */
 
 :root {
   color-scheme: light dark;
 
-  --t-bg: light-dark(#faf8f2, #151412);
-  --t-fg: light-dark(#1e1c19, #e4e0d6);
-  --t-muted: light-dark(#6e685e, #9a958a);
-  --t-line: light-dark(#ddd7ca, #2c2a26);
-  --t-line-strong: light-dark(#8a8477, #726c62); /* 3:1 on the page: kbd, search box, diagnostics */
-  --t-soft: light-dark(#f2eee4, #1d1c19);
-  --t-link: light-dark(#2c5a9b, #8fb4ec);
-  --t-mark: light-dark(#fbeeb4, #4a3f14);
-  --t-error: light-dark(#b3261e, #ff9b8f);
-  --t-error-bg: light-dark(#fdecea, #2a0c08);
-  --t-warn: light-dark(#8a5300, #e0b771);
-  --t-code-comment: light-dark(#59636e, #949da6);
-  --t-code-keyword: light-dark(#cf222e, #ff7b72);
-  --t-code-string: light-dark(#0a3069, #a5d6ff);
-  --t-code-number: light-dark(#0550ae, #79c0ff);
-  --t-code-function: light-dark(#6639ba, #d2a8ff);
-  --t-code-type: light-dark(#953800, #ffa657);
-  --t-code-variable: light-dark(#0550ae, #79c0ff);
-  --t-code-meta: light-dark(#116329, #7ee787);
-  --t-code-inserted: light-dark(#116329, #7ee787);
-  --t-code-deleted: light-dark(#82071e, #ffa198);
+  --t-bg: light-dark(#f6ecd8, #1b1815);
+  --t-fg: light-dark(#262320, #eadfc8);
+  --t-muted: light-dark(#6b6153, #a89d88);
+  --t-line: light-dark(#d9c7a0, #3b3429);
+  --t-line-strong: light-dark(#a47432, #c9a452);
+  --t-soft: light-dark(#efe3ca, #231e19);
+  --t-link: light-dark(#85591a, #d6b062);
+  --t-mark: light-dark(#f1d990, #5a4a1a);
+  --t-error: light-dark(#9a2f1e, #ff9b8f);
+  --t-error-bg: light-dark(#f6ddd4, #3b1714);
+  --t-warn: light-dark(#8a5300, #e3b341);
 
-  --t-font: "STIX Two Text", Charter, "Iowan Old Style", Georgia, serif;
-  --t-sans: "STIX Two Text", Charter, "Iowan Old Style", Georgia, serif;
-  --t-width: 42rem;
-  --t-size: 1.125rem; /* 18px at the default, and the reader's setting holds */
-  --t-leading: 1.6;
-
-  /* The kinds of block, each with a hue. */
-  --n-defn: light-dark(#0f6e63, #69d3c6); /* definition */
-  --n-thm: light-dark(#8a5a00, #e0b771); /* theorem, lemma, proposition, corollary, law; summary */
-  --n-eg: light-dark(#2f6f36, #95cf96); /* example */
-  --n-note: light-dark(#2c5a9b, #8cc3fc); /* note, recall */
-  --n-caution: light-dark(#9a3f2a, #f7a792); /* caution */
-  --n-violet: light-dark(#5e4a99, #c2b1f8); /* question, references */
-  --n-question: var(--n-violet);
-  --n-summary: var(--n-thm);
-  --n-accent: var(--t-muted);
+  --t-gold: var(--t-line-strong);
+  --t-font: "EB Garamond", "Iowan Old Style", Charter, Georgia, serif;
+  --t-sans: var(--t-font);
+  --t-mono: ui-monospace, "JetBrains Mono", Menlo, Consolas, monospace;
+  --t-width: 40rem;
+  --t-size: 1.2rem; /* Garamond sets small: 19px at the browser's default */
+  --t-leading: 1.55;
 }
 :root[data-theme="light"] {
   color-scheme: light;
@@ -55,33 +41,243 @@
 :root[data-theme="dark"] {
   color-scheme: dark;
 }
-
-::selection {
-  background: color-mix(in srgb, var(--t-link) 25%, transparent);
+@media (prefers-contrast: more) {
+  :root {
+    --t-muted: var(--t-fg);
+    --t-line: var(--t-line-strong);
+  }
 }
 
-/* The footer sits at the foot of a short page: the body is a column of
-   masthead, note and footer, as tall as the window at least. */
+/* ------------------------------------------------------------ the page */
+
 html {
+  background: var(--t-bg);
+  color: var(--t-fg);
+  font: var(--t-size) / var(--t-leading) var(--t-font);
+  -webkit-text-size-adjust: 100%;
   min-block-size: 100%;
 }
 body {
+  margin: 0;
+  padding: 2rem 1rem 3rem;
   min-block-size: 100vh;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  padding-block: 2rem 3rem;
 }
-body > main.tern {
+body > main.luccet {
   flex: 1 0 auto;
   inline-size: 100%;
+}
+.luccet {
+  max-inline-size: var(--t-width);
+  margin-inline: auto;
+  hanging-punctuation: first last;
+}
+.luccet > :first-child {
+  margin-block-start: 0;
+}
+.luccet :is(p, li, dd, blockquote, figcaption, caption, .t-title) {
+  text-wrap: pretty;
+}
+.luccet :is(p, ul, ol, dl, pre, table, blockquote, figure, details),
+.t-block,
+.t-eq {
+  margin-block: 0 1rem;
+  margin-inline: 0;
+}
+::selection {
+  background: var(--t-mark);
+}
+
+/* ------------------------------------------------------------ headings */
+
+.luccet :is(h1, h2, h3, h4, h5, h6) {
+  font-family: var(--t-font);
+  font-weight: 500;
+  line-height: 1.2;
+  text-wrap: balance;
+  color: var(--t-fg);
+}
+.luccet h1 {
+  font-size: 2.2rem;
+  margin-block: 0 2rem;
+}
+.luccet h2 {
+  font-size: 1.45rem;
+  margin-block: 2.75rem 0.9rem;
+  padding-block-end: 0.25rem;
+  border-block-end: 1px solid var(--t-line);
+}
+.luccet h3 {
+  font-size: 1.15rem;
+  margin-block: 2rem 0.6rem;
+}
+.luccet :is(h4, h5, h6) {
+  font-size: 1rem;
+  font-style: italic;
+  margin-block: 1.5rem 0.5rem;
+}
+
+/* {.kicker}: the small line above or under a title. */
+.luccet .kicker {
+  font-size: 0.9rem;
+  letter-spacing: 0.04em;
+  color: var(--t-muted);
+}
+
+/* ------------------------------------------------------------ text */
+
+.luccet a {
+  color: var(--t-link);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+  text-decoration-color: color-mix(in srgb, currentColor 40%, transparent);
+}
+.luccet a:hover {
+  text-decoration-color: currentColor;
+}
+.luccet a.t-ref {
+  color: inherit;
+  text-decoration: underline dotted;
+  text-decoration-color: var(--t-muted);
+}
+.luccet a.t-ref:hover {
+  color: var(--t-link);
+}
+.luccet :is(ul, ol) {
+  padding-inline-start: 1.5rem;
+}
+.luccet li > :is(ul, ol) {
+  margin-block-end: 0;
+}
+.luccet li > p {
+  margin-block-end: 0.5rem;
+}
+.luccet hr {
+  border: 0;
+  border-block-start: 1px solid var(--t-line);
+  margin-block: 2.5rem;
+}
+.luccet blockquote {
+  margin-inline-start: 0;
+  padding-inline-start: 1rem;
+  border-inline-start: 2px solid var(--t-line);
+  color: var(--t-muted);
+}
+.luccet mark,
+.luccet mark a {
+  color: var(--t-fg);
+}
+.luccet mark {
+  background: var(--t-mark);
+  padding-inline: 0.15em;
+}
+.luccet dfn {
+  font-style: italic;
+  font-weight: 500;
+}
+.luccet .term > a {
+  color: inherit;
+}
+
+/* Code: small, on a soft panel, with a hairline. */
+.luccet :is(code, kbd, samp, pre) {
+  font-family: var(--t-mono);
+  font-size: 0.82em;
+}
+.luccet pre code {
+  font-size: 1em;
+}
+.luccet :not(pre) > code {
+  background: var(--t-soft);
+  padding: 0.1em 0.3em;
+  border-radius: 3px;
+}
+.luccet kbd {
+  border: 1px solid var(--t-line-strong);
+  border-block-end-width: 2px;
+  border-radius: 3px;
+  padding: 0.05em 0.4em;
+}
+.luccet pre {
+  background: var(--t-soft);
+  border: 1px solid var(--t-line);
+  border-radius: 4px;
+  padding: 0.8rem 1rem;
+  line-height: 1.45;
+}
+
+/* Tables: rules, no grid. */
+.luccet table {
+  border-collapse: collapse;
+  font-size: 0.95em;
+}
+.luccet :is(th, td) {
+  padding: 0.35em 0.8em;
+  border-block-end: 1px solid var(--t-line);
+  text-align: start;
+}
+.luccet th {
+  font-weight: 500;
+  border-block-end-color: var(--t-line-strong);
+}
+.luccet caption {
+  caption-side: top;
+  text-align: start;
+  padding-block-end: 0.4em;
+}
+
+/* Blocks, figures, footnotes. */
+.t-title {
+  font-weight: 500;
+  margin-block-end: 0.4rem;
+}
+.t-block > :last-child,
+.t-cell > :last-child,
+.luccet blockquote > :last-child {
+  margin-block-end: 0;
+}
+.luccet figure.t-block {
+  text-align: center;
+}
+.luccet figure > img {
+  display: block;
+  margin-inline: auto;
+}
+.luccet :is(figcaption, caption).t-title {
+  font-weight: normal;
+  font-size: 0.95em;
+  color: var(--t-muted);
+  margin-block: 0.4rem 0;
+}
+.t-eqno {
+  color: var(--t-muted);
+  font-size: 0.9em;
+}
+.t-fnref {
+  line-height: 0;
+  font-size: 0.75em;
+}
+.t-fnref a,
+.t-fnback {
+  text-decoration: none;
+}
+.t-footnotes {
+  border-block-start: 1px solid var(--t-line);
+  margin-block-start: 3rem;
+  padding-block-start: 1rem;
+  font-size: 0.9em;
+}
+.luccet .t-error {
+  font-size: 0.85em;
 }
 
 /* ------------------------------------------------------------ the chrome */
 
 /* The masthead: the mark and the name at the start, the sections at the end,
-   the section this page is in underlined. site.js adds it to every page but
-   the home page, which is its own masthead. */
+   the section this page is in marked in gold. site.js adds it to every page
+   but the home page, which is its own. */
 .site-head {
   inline-size: 100%;
   max-inline-size: var(--t-width);
@@ -89,25 +285,26 @@ body > main.tern {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem 1.5rem;
+  gap: 0.75rem 1.5rem;
   flex-wrap: wrap;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
 }
 .site-brand {
   display: inline-flex;
   align-items: center;
   gap: 0.6rem;
   color: var(--t-fg);
-  font-weight: 600;
-  letter-spacing: 0.02em;
+  font-weight: 500;
+  letter-spacing: 0.03em;
   text-decoration: none;
 }
 .site-brand:hover {
   color: var(--t-link);
 }
 .site-mark {
-  inline-size: 32px;
-  block-size: 32px;
+  inline-size: 36px;
+  block-size: 36px;
+  border-radius: 50%;
 }
 .site-nav a {
   color: var(--t-muted);
@@ -120,12 +317,12 @@ body > main.tern {
 .site-nav a[aria-current] {
   color: var(--t-fg);
   text-decoration: underline;
-  text-decoration-color: var(--t-link);
+  text-decoration-color: var(--t-gold);
   text-decoration-thickness: 1px;
   text-underline-offset: 0.4em;
 }
 
-/* The footer: a hairline, a line of small print, the scheme switch. */
+/* The footer: a gold hairline, a line of small print, the scheme switch. */
 .site-foot {
   inline-size: 100%;
   max-inline-size: var(--t-width);
@@ -164,188 +361,104 @@ body > main.tern {
   color: var(--t-link);
 }
 
-/* The woodcut: black ink on white. multiply drops the white on paper; in
-   the dark it is inverted and screened, white ink on the dark. */
-.site-mark,
-.tern .logo img {
-  mix-blend-mode: multiply;
-}
-:root[data-theme="dark"] .site-mark,
-:root[data-theme="dark"] .tern .logo img {
-  mix-blend-mode: screen;
-  filter: invert(1) brightness(0.92);
-}
-
-/* The home page: the logo and the sections under it, centred. */
-.tern .logo,
-.tern .logo + .kicker {
+/* The home page: the emblem, the name, a line, the sections; all centred. */
+.luccet .home {
   text-align: center;
+  margin-block-start: 3rem;
 }
-.tern .logo {
-  margin-block-start: 2rem;
-}
-.tern .logo img {
+.luccet .home img {
   display: inline-block;
+  border-radius: 50%;
 }
-.tern .logo + .kicker {
-  font-size: 1rem;
-  margin-block-start: 1.5rem;
+.luccet .home + h1 {
+  text-align: center;
+  font-size: 2.6rem;
+  letter-spacing: 0.06em;
+  margin-block: 1.5rem 0.25rem;
 }
-.tern .logo + .kicker a {
-  margin-inline: 0.35rem;
+.luccet .home + h1 + .kicker {
+  text-align: center;
+  margin-block-end: 2.5rem;
 }
-
-/* ------------------------------------------------------------ headings */
-
-.tern :is(h1, h2, h3, h4, h5, h6) {
-  font-family: var(--t-font);
-  font-weight: 600;
-  letter-spacing: -0.005em;
-  color: var(--t-fg);
+.luccet .sections {
+  text-align: center;
+  font-size: 1.05rem;
 }
-.tern h1 {
-  font-size: 2.1rem;
-  line-height: 1.15;
-  margin-block: 0 2.25rem;
-}
-.tern h2 {
-  font-size: 1.4rem;
-  border: 0;
-  padding: 0;
-  margin-block: 3rem 1rem;
-}
-.tern h3 {
-  font-size: 1.12rem;
-  margin-block: 2rem 0.75rem;
-}
-.tern :is(h4, h5, h6) {
-  font-size: 1rem;
-  font-style: italic;
-  font-weight: 500;
-  color: var(--t-muted);
-}
-
-/* {.kicker} on the paragraph before the title: the small line above it, as
-   \titlehead sets it: the book a chapter's solutions follow. */
-.tern .kicker {
-  font-size: 0.85rem;
-  line-height: 1.5;
-  color: var(--t-muted);
-  margin-block-end: 1rem;
-}
-.tern .kicker a {
-  color: inherit;
+.luccet .sections a {
+  margin-inline: 0.6rem;
   text-decoration: none;
 }
-.tern .kicker a:hover {
-  color: var(--t-link);
+.luccet .sections a:hover {
   text-decoration: underline;
 }
 
-/* ------------------------------------------------------------ text */
+/* ------------------------------------------------------------ the wiki add-ons */
 
-.tern a {
-  color: var(--t-link);
-  text-decoration-thickness: 1px;
-  text-underline-offset: 0.2em;
-  text-decoration-color: color-mix(in srgb, currentColor 45%, transparent);
+.luccet .t-notes a {
+  text-decoration: none;
 }
-.tern a:hover {
-  text-decoration-color: currentColor;
+.luccet .t-notes-title {
+  font-weight: 500;
 }
-.tern a.t-ref {
-  color: inherit;
-  text-decoration: underline dotted;
-  text-decoration-color: var(--t-muted);
+/* The list's first rule would double the heading's. */
+.luccet .t-notes-list > li:first-child {
+  border-block-start: 0;
 }
-.tern a.t-ref:hover {
-  color: var(--t-link);
-  text-decoration-color: currentColor;
+.luccet .t-notes a:hover {
+  text-decoration: underline;
 }
-.tern .term {
-  font-style: inherit;
-  font-weight: 600;
-  color: var(--n-defn);
-}
-.tern blockquote {
-  border-inline-start: 2px solid var(--t-line);
+.luccet :is(.t-notes, .t-glossary) time,
+.luccet :is(.t-notes, .t-glossary) .t-notes-desc {
   color: var(--t-muted);
 }
-.tern hr {
-  margin-block: 2.5rem;
-}
-.tern th {
-  font-family: var(--t-font);
-  font-weight: 600;
-}
-.tern pre {
-  border: 1px solid var(--t-line);
+.luccet .t-search input {
+  font: inherit;
+  color: inherit;
+  background: var(--t-soft);
+  border: 1px solid var(--t-line-strong);
   border-radius: 4px;
+  padding: 0.4em 0.7em;
+  inline-size: 100%;
+  box-sizing: border-box;
+}
+.luccet .t-search input:focus {
+  outline: 2px solid var(--t-gold);
+  outline-offset: 1px;
 }
 
-/* {.parts} on the line before a numbered list: lettered a) b) c), */
-.tern .parts {
-  list-style-type: lower-alpha;
-}
-.tern .parts > li::marker {
-  content: counter(list-item, lower-alpha) ")\2002";
-}
+/* ------------------------------------------------------------ the vocabulary (math.js) */
 
-/* Formulas, at the size of the text around them. */
-.tern .katex {
-  font-size: 1.04em;
-}
-.t-eqno {
-  font-size: 0.9em;
-}
-
-/* ------------------------------------------------------------ labels */
-
-/* A label: small tracked capitals in its kind's colour; a title after it in
-   italic. */
-.tern :is(.defn, .thm, .eg, .callout, .rmk) > .t-title > .t-label {
+/* A label: small tracked capitals in gold; a title after it in italic. */
+.luccet :is(.defn, .thm, .eg, .callout, .rmk) > .t-title > .t-label {
   font-style: normal;
-  font-weight: 600;
+  font-weight: 500;
   font-size: 0.74em;
   text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: var(--n-accent);
+  letter-spacing: 0.14em;
+  color: var(--n-accent, var(--t-gold));
   margin-inline-end: 0.6em;
 }
-.tern :is(.defn, .thm, .eg, .callout, .rmk) > .t-title {
+.luccet :is(.defn, .thm, .eg, .callout, .rmk) > .t-title {
   font-weight: normal;
   font-style: italic;
   color: var(--t-muted);
   margin-block-end: 0.35rem;
 }
-
-/* Definition, theorem and kin, example: a label, the kind's colour. */
-.tern :is(.defn, .thm, .eg) {
+.luccet :is(.defn, .thm, .eg) {
   margin-block: 1.5rem;
 }
-.tern .defn {
-  --n-accent: var(--n-defn);
-}
-.tern .thm {
-  --n-accent: var(--n-thm);
-}
-.tern .eg {
-  --n-accent: var(--n-eg);
-}
 /* A statement is set in italic; emphasis inside it turns upright. */
-.tern .stmt > :not(.t-title) {
+.luccet .stmt > :not(.t-title) {
   font-style: italic;
 }
-.tern .stmt :is(em, i) {
+.luccet .stmt :is(em, i) {
   font-style: normal;
 }
-
-/* Proof, disproof: "Proof." run in with the first line, in italic, ∎ at the
-   end of the last. :::proof[of (a)] reads "Proof of (a)." */
-.tern .pf {
+/* Proof: "Proof." run in with the first line, ∎ at the end of the last. */
+.luccet .pf {
   margin-block: 0 1.25rem;
 }
-.tern .pf > .t-title {
+.luccet .pf > .t-title {
   float: inline-start;
   font-weight: normal;
   font-style: italic;
@@ -353,44 +466,54 @@ body > main.tern {
   margin-block: 0;
   margin-inline-end: 0.5em;
 }
-.tern .pf > .t-title > .t-label {
+.luccet .pf > .t-title > .t-label {
   font-weight: normal;
 }
-.tern .pf > .t-title::after {
+.luccet .pf > .t-title::after {
   content: ".";
 }
-.tern .pf > :is(.t-eq, pre, table, figure, ul, ol) {
+.luccet .pf > :is(.t-eq, pre, table, figure, ul, ol) {
   clear: both;
 }
-.tern .pf > :nth-last-child(2) {
+.luccet .pf > :nth-last-child(2) {
   margin-block-end: 0;
 }
-.tern .pf > .t-end {
+.luccet .pf > .t-end {
   clear: both;
   color: var(--t-muted);
   font-size: 0.8em;
-  line-height: 1.4;
 }
-
-/* Remark: a muted label, nothing more. */
-.tern .rmk {
+.luccet .rmk {
   --n-accent: var(--t-muted);
 }
 
+/* Callouts: a soft panel with a gold rule at the side; caution's is red. */
+.luccet .callout {
+  background: var(--t-soft);
+  border-inline-start: 2px solid var(--n-accent, var(--t-gold));
+  border-radius: 0 4px 4px 0;
+  padding: 0.75rem 1.1rem 0.8rem;
+  margin-block: 1.5rem;
+}
+.luccet .callout > :last-child {
+  margin-block-end: 0;
+}
+.luccet .caution {
+  --n-accent: var(--t-error);
+}
+
 /* Folds: recall. A caret before the head turns when it opens. */
-.tern .fold > .t-title {
+.luccet .fold > .t-title {
   list-style: none;
   cursor: pointer;
   user-select: none;
-  font-size: 0.85rem;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  color: var(--t-muted);
+  font-style: normal;
+  color: var(--t-fg);
 }
-.tern .fold > .t-title::-webkit-details-marker {
+.luccet .fold > .t-title::-webkit-details-marker {
   display: none;
 }
-.tern .fold > .t-title::before {
+.luccet .fold > .t-title::before {
   content: "";
   display: inline-block;
   inline-size: 0.38em;
@@ -402,206 +525,88 @@ body > main.tern {
   transform: rotate(-45deg);
   transition: transform 0.15s;
 }
-.tern .fold[open] > .t-title::before {
+.luccet .fold[open] > .t-title::before {
   transform: rotate(45deg);
 }
-.tern .fold > .t-title:hover {
-  color: var(--t-fg);
-}
-.tern .fold:not(.callout) {
-  padding-inline-start: 1.25rem;
-}
-.tern .fold:not(.callout)[open] {
-  border-inline-start: 1px solid var(--t-line);
-}
-.tern .fold:not(.callout) > .t-title {
-  margin-inline-start: -1.25rem;
-  padding-inline-start: 1.25rem;
+.luccet .callout.fold:not([open]) > .t-title {
+  margin-block-end: 0;
 }
 
-/* ------------------------------------------------------------ revisions */
-
-/* A revision: a sentence as written, then as revised, each under a small
-   head; a line on what moved may follow. */
-.tern .revision {
+/* A revision: a sentence as written, then as revised, under small heads. */
+.luccet .revision {
   margin-block: 1.5rem;
   padding-inline-start: 1.25rem;
   border-inline-start: 1px solid var(--t-line);
 }
-.tern .revision > .before,
-.tern .revision > .after {
+.luccet .revision > :is(.before, .after) {
   margin-block: 0.5rem;
 }
-.tern .revision > .before::before,
-.tern .revision > .after::before {
+.luccet .revision > :is(.before, .after)::before {
   display: block;
-  font-family: var(--t-sans);
-  font-weight: 600;
   font-size: 0.74rem;
-  letter-spacing: 0.12em;
+  font-weight: 500;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--t-muted);
   margin-block-end: 0.2rem;
 }
-.tern .revision > .before::before {
+.luccet .revision > .before::before {
   content: "Before";
 }
-.tern .revision > .after::before {
+.luccet .revision > .after::before {
   content: "After";
-  color: var(--n-accent, var(--n-thm));
+  color: var(--t-gold);
 }
-.tern .revision > .before {
+.luccet .revision > .before {
   color: var(--t-muted);
 }
-.tern .revision > .after ~ p {
+.luccet .revision > .after ~ p {
   font-size: 0.92em;
   color: var(--t-muted);
 }
 
-/* ------------------------------------------------------------ callouts */
-
-/* Summary, note, caution, question, recall: a soft panel, a rule at the side
-   in the kind's colour. */
-.tern .callout {
-  background: var(--t-soft);
-  border-inline-start: 2px solid var(--n-accent);
-  border-radius: 0 4px 4px 0;
-  padding: 0.75rem 1.1rem 0.8rem;
-  margin-block: 1.5rem;
-}
-.tern .callout.fold > .t-title {
-  font-size: 1em;
-  font-style: normal;
-  letter-spacing: normal;
-  color: var(--t-fg);
-}
-.tern .callout.fold:not([open]) > .t-title {
-  margin-block-end: 0;
-}
-.tern .callout > :last-child {
-  margin-block-end: 0;
-}
-.tern .note,
-.tern .recall {
-  --n-accent: var(--n-note);
-}
-.tern .caution {
-  --n-accent: var(--n-caution);
-}
-.tern .question {
-  --n-accent: var(--n-question);
-}
-.tern .summary {
-  --n-accent: var(--n-summary);
-}
-
-/* ------------------------------------------------------------ figures, contents */
-
-.tern :is(figcaption, caption).t-title .t-label {
-  font-weight: 600;
-  color: var(--t-fg);
-}
-.tern figure.t-block {
-  text-align: center;
-}
-
-.tern .toc {
+/* Contents. */
+.luccet .toc {
   font-size: 0.92rem;
   margin-block: 0 2.5rem;
 }
-.tern .toc > .t-label {
+.luccet .toc > .t-label {
   display: block;
   font-size: 0.74rem;
-  font-weight: 600;
+  font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.14em;
   color: var(--t-muted);
   margin-block-end: 0.5rem;
 }
-.tern .toc ol {
-  margin: 0;
-  padding-inline-start: 1.4rem;
-}
-.tern .toc li::marker {
-  color: var(--t-muted);
-}
-.tern .toc a {
-  color: var(--t-fg);
+.luccet .toc a {
   text-decoration: none;
-}
-.tern .toc a:hover {
-  color: var(--t-link);
-}
-
-/* ------------------------------------------------------------ search, notes */
-
-/* ::search (addons/search.js): the box in the text's type, hits as a list
-   under hairlines. ::notes (addons/notes.js): the same list, for posts. */
-.tern .t-search {
-  margin-block: 1.5rem 2rem;
-}
-.tern .t-search-box {
-  font-family: var(--t-font);
-  font-size: 1rem;
-  padding: 0.55rem 0.8rem;
-  border-radius: 4px;
-  background: var(--t-soft);
-}
-.tern .t-search-box:focus-visible {
-  outline: 1px solid var(--t-link);
-  outline-offset: 0;
-  border-color: var(--t-link);
-}
-.tern :is(.t-search-status, .t-notes-status) {
-  font-size: 0.85rem;
-  color: var(--t-muted);
-}
-.tern :is(.t-search-results, .t-notes-list) > li {
-  padding-block: 0.7rem;
-  border-block-start: 1px solid var(--t-line);
-}
-.tern :is(.t-search-label, .t-notes-title) {
-  font-weight: 600;
-  color: var(--t-fg);
-}
-.tern .t-search-results a:hover :is(.t-search-title, .t-search-label),
-.tern .t-notes-title:hover {
-  color: var(--t-link);
-}
-.tern :is(.t-search-page, .t-notes-date) {
-  font-family: var(--t-font);
-  font-size: 0.85rem;
-  color: var(--t-muted);
-  margin-inline-start: 0.6em;
-}
-.tern :is(.t-search-snippet, .t-notes-desc) {
-  margin-block: 0.25rem 0;
-  font-size: 0.95rem;
-  color: var(--t-fg);
 }
 
 /* ------------------------------------------------------------ print */
 
 @media print {
-  :root,
-  :root[data-theme] {
-    color-scheme: light;
-    --t-bg: #fff;
-    --t-fg: #000;
-    --t-muted: #555;
-    --t-line: #cfcfcf;
-    --t-line-strong: #767676;
-    --t-soft: #f4f4f2;
+  :root {
     --t-size: 11pt;
+  }
+  body {
+    padding: 0;
+  }
+  .luccet {
+    max-inline-size: none;
   }
   .site-head,
   .site-foot {
     display: none;
   }
-  .tern :is(.defn, .thm, .eg, .callout) {
-    break-inside: avoid;
+  .luccet :is(p, li, blockquote) {
+    orphans: 3;
+    widows: 3;
   }
-  .tern .fold > .t-title::before {
-    content: none;
+  .luccet :is(h1, h2, h3, h4, h5, h6) {
+    break-after: avoid;
+  }
+  .luccet :is(figure, figcaption, .t-eq, blockquote, tr, .defn, .thm, .eg, .callout) {
+    break-inside: avoid;
   }
 }
